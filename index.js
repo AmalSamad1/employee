@@ -1,10 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require('cors')
-// enabling CORS for some specific origins only.
-let corsOptions = {
-   origin : ['https://superb-syrniki-a82d91.netlify.app'],
-}
+app.use(cors())
 // Dummy employee data
 const employees = [
     { id: 1, name: "John Doe", role: "Software Engineer", salary: 70000 },
@@ -14,7 +11,7 @@ const employees = [
 ];
 
 // Middleware to parse JSON
-app.use(cors(corsOptions))
+
 
 // Get all employees
 app.get("/employees", (req, res) => {
