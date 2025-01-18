@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 // enabling CORS for some specific origins only.
 let corsOptions = {
-   origin : ['https://superb-syrniki-a82d91.netlify.app/','https://superb-syrniki-a82d91.netlify.app/'],
+   origin : ['https://superb-syrniki-a82d91.netlify.app'],
 }
 // Dummy employee data
 const employees = [
