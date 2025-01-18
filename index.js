@@ -1,6 +1,12 @@
 const express = require("express");
 const app = express();
+app.use(cors());
 
+// Optionally, you can restrict it to a specific origin (e.g., your frontend server):
+// app.use(cors({ origin: 'http://127.0.0.1:5501' }));
+
+// Rest of your routes
+app.use(express.json());
 // Dummy employee data
 const employees = [
     { id: 1, name: "John Doe", role: "Software Engineer", salary: 70000 },
